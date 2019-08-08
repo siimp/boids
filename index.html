@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Boids Flock Simulation</title>
+<style>
+@import url('https://fonts.googleapis.com/css?family=Roboto:400&display=swap');
+
+body {
+  max-width: 140ch;
+  padding: 2ch;
+  margin: auto;
+  font-family: 'Roboto', sans-serif;
+}
+
+#canvas {
+	border: 1px solid black;
+	display: block;
+}
+
+.flex-container {
+  display: flex;
+}
+.flex-container > div {
+  padding-right: 6ch;
+}
+
+</style>
+</head>
+
+<body>
+<h1>Boids Flock Simulation</h1>
+<div class="flex-container">
+    <div>
+        <canvas id="canvas" width="800" height="600"></canvas>
+    </div>
+    <div>
+        <p>Simulation Config</p>
+        <pre id="config"></pre>
+    </div>
+</div>
+
+<script src="boid.js"></script>
+<script src="game.js"></script>
+<script src="gameConfig.js"></script>
+<script src="gameDisplay.js"></script>
+<script src="gameEngine.js"></script>
+</body>
+</html>
