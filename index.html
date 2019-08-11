@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Boids Flock Simulation</title>
 <style>
 @import url('https://fonts.googleapis.com/css?family=Roboto:400&display=swap');
@@ -20,9 +21,16 @@ body {
 
 .flex-container {
   display: flex;
+  flex-direction: column;
 }
 .flex-container > div {
   padding-right: 6ch;
+}
+
+@media (min-width: 600px) {  
+  .flex-container {
+    flex-direction: row;
+  }
 }
 
 </style>
@@ -40,6 +48,7 @@ body {
     </div>
 </div>
 
+<script src="util.js"></script>
 <script src="boid.js"></script>
 <script src="game.js"></script>
 <script src="gameConfig.js"></script>

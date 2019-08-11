@@ -1,13 +1,15 @@
 "use strict";
 
-
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext('2d');
 const game = new Game();
 
-window.addEventListener('config-changed', function (e) {
+window.addEventListener('config-changed', () => {
   game.reset();
 }, false);
+
+window.addEventListener('canvas-size-changed', () => {
+  game.reset();
+}, false);
+
 
 function tick(timestamp) {	
 	draw();

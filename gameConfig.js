@@ -2,7 +2,7 @@
 
 {
   let defaultConfig = {
-      test: 3
+      boidCount: 3
   }
   
   let handler = {
