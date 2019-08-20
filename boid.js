@@ -2,12 +2,12 @@
 
 class Boid {
 
-  constructor(x, y) {
-    this.x = x;
-    this.y = y;
-    this.speedX = 0;
-    this.speedY = 0;
-    this.orientation = 0;
+  constructor(x, y, angle, speedX, speedY) {
+    this.x = x || 0;
+    this.y = y || 0;
+    this.angle = angle || 0;
+    this.speedX = speedX || 0;
+    this.speedY = speedY || 0;
   }
 
 }

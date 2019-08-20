@@ -2,7 +2,12 @@
 
 {
   let defaultConfig = {
-      boidCount: 3
+      boidCount: 3,
+      boid: {
+        width: 10,
+        height: 30,
+        localZoneRadius: 15
+      }
   }
   
   let handler = {
