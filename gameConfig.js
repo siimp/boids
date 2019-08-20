@@ -7,7 +7,8 @@
         width: 10,
         height: 30,
         localZoneRadius: 100,
-        turningSpeed: 0.05
+        turningSpeed: 0.05,
+        color: "green"
       }
   }
   
@@ -24,7 +25,15 @@
       },
   };
 
-  window.config = new Proxy(defaultConfig, handler);
+  const globalConfig = {};
+  Object.keys(defaultConfig).forEach(function(key, index) {
+    if (typeof defaultConfig[key] === 'object') {
+      globalConfig[key] = new Proxy(defaultConfig[key], handler);
+    } else {
+      globalConfig[key] = defaultConfig[key];
+    }
+  });
+  window.config = new Proxy(globalConfig, handler);
 }
 
 function fireConfigChangedEvent() {

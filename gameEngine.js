@@ -2,9 +2,11 @@
 (function() {
 const ctx = window.getGameCanvasCtx();
 const game = new Game(ctx.canvas.width, ctx.canvas.height);
+let boidVisualPool = [];
 
 window.addEventListener('config-changed', () => {
   game.reset(ctx.canvas.width, ctx.canvas.height);
+  boidVisualPool = [];
 }, false);
 
 window.addEventListener('canvas-size-changed', () => {
@@ -19,8 +21,6 @@ function tick(timestamp) {
 }
 window.requestAnimationFrame(tick);
 
-
-const boids = [];
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
@@ -32,13 +32,13 @@ function draw() {
 }
 
 function drawBoid(boid, boidVisual) {
+    ctx.fillStyle = config.boid.color;
     ctx.translate(boid.x, boid.y);
     ctx.rotate(boid.angle);
     ctx.fill(boidVisual);
     ctx.setTransform(1, 0, 0, 1, 0, 0);  
 }
 
-const boidVisualPool = [];
 function getBoidVisualFromPool(boidIndex) {
   let boidVisual = boidVisualPool[boidIndex];
   
