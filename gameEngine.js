@@ -14,6 +14,7 @@ window.addEventListener('canvas-size-changed', () => {
 
 function tick(timestamp) {	
 	draw();
+	game.tick();
 	window.requestAnimationFrame(tick)
 }
 window.requestAnimationFrame(tick);

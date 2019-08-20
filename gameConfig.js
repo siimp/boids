@@ -2,11 +2,12 @@
 
 {
   let defaultConfig = {
-      boidCount: 3,
+      boidCount: 20,
       boid: {
         width: 10,
         height: 30,
-        localZoneRadius: 15
+        localZoneRadius: 100,
+        turningSpeed: 0.05
       }
   }
   

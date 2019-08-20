@@ -8,6 +8,29 @@ class Boid {
     this.angle = angle || 0;
     this.speedX = speedX || 0;
     this.speedY = speedY || 0;
+    
+    this.newX = this.x;
+    this.newY = this.y;
+    this.newAngle = this.angle;
+    this.newSpeedX = this.speedX;
+    this.newSpeedY = this.speedY;
+  }
+  
+  setLocalZoneRadius(localZoneRadius) {
+    this.localZoneRadius = localZoneRadius || 0;
+  }
+  
+  isLocalMateTo(other) {
+    const distance = Math.sqrt(Math.pow(this.x - other.x, 2) + Math.pow(this.y - other.y, 2));
+    return distance <= this.localZoneRadius;
+  }
+  
+  update() {
+    this.x = this.newX;
+    this.y = this.newY;
+    this.angle = this.newAngle;
+    this.speedX = this.newSpeedX;
+    this.speedY = this.newSpeedY;
   }
 
 }
