@@ -2,12 +2,25 @@
 
 class Game {
 
-  reset() {
-    console.log("reseting game");
+  constructor(width, height) {
+    this.boids = [];
+    this.init(width, height);
+  }
+
+  reset(width, height) {
+    this.boids = [];
+    this.init(width, height);
+  }
+  
+  init(width, height) {
+    for (let boidIndex = 0; boidIndex < config.boidCount; boidIndex++) {
+      const boid = new Boid(Math.random() * width, Math.random() * height, 2 * Math.PI * Math.random());
+      this.boids.push(boid);
+    }
   }
   
   getBoids() {
-    return [new Boid(200, 200), new Boid(300, 200, Math.PI/4)];
+    return this.boids;
   }
 
 }

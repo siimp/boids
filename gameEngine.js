@@ -1,15 +1,14 @@
 "use strict";
-
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext('2d');
-const game = new Game();
+(function() {
+const ctx = window.getGameCanvasCtx();
+const game = new Game(ctx.canvas.width, ctx.canvas.height);
 
 window.addEventListener('config-changed', () => {
-  game.reset();
+  game.reset(ctx.canvas.width, ctx.canvas.height);
 }, false);
 
 window.addEventListener('canvas-size-changed', () => {
-  game.reset();
+  game.reset(ctx.canvas.width, ctx.canvas.height);
 }, false);
 
 
@@ -62,4 +61,5 @@ function getBoidVisual() {
     
     return triangle;
 }
+})();
 

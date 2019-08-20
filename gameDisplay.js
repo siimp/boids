@@ -1,7 +1,12 @@
 "use strict";
-(function() {
+function getGameCanvasCtx() {
   const canvas = document.getElementById("canvas");
-  const ctx = canvas.getContext('2d');
+  return canvas.getContext('2d');
+}
+window.getGameCanvasCtx = getGameCanvasCtx;
+
+(function() {
+  const ctx = getGameCanvasCtx();
   const configDiv = document.getElementById("config");
 
 
@@ -14,9 +19,6 @@
   }, false);
 
   updateConfigDiv();
-
-
-
 
   let resizeTimeoutId;
   window.addEventListener("resize", () => {
