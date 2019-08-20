@@ -20,9 +20,12 @@ class Boid {
     this.localZoneRadius = localZoneRadius || 0;
   }
   
+  distanceTo(other) {
+    return Math.sqrt(Math.pow(this.x - other.x, 2) + Math.pow(this.y - other.y, 2));
+  }
+  
   isLocalMateTo(other) {
-    const distance = Math.sqrt(Math.pow(this.x - other.x, 2) + Math.pow(this.y - other.y, 2));
-    return distance <= this.localZoneRadius;
+    return this.distanceTo(other) <= this.localZoneRadius;
   }
   
   update() {

@@ -37,8 +37,26 @@ class Game {
     }
   }
   
-  steerToAvoidCrowding(boidMates) {
-  
+  steerToAvoidCrowding(boidMate) {
+    // find closest and steer towards opposite direction
+    let closestDistance = Number.MAX_VALUE;
+    let closestMate = null;
+    const mates = boidMate.mates;
+    
+    for (const mateIndex in mates) {
+      const mate = mates[mateIndex];
+      let distanceToMate = boidMate.boid.distanceTo(mate);
+      if (distanceToMate < closestDistance) {
+        closestDistance = distanceToMate;
+        closestMate = mate;
+      }
+    }
+    
+    if (closestMate) {
+      const angleTowardsClosestMate = this.pointAngleFromBoidPerspective(closestMate, boidMate.boid);
+      const oppositeAngle = angleTowardsClosestMate + Math.PI;
+      this.steerTowardsAngle(boidMate, oppositeAngle);
+    }
   }
   
   steerTowardsAverageHeading(boidMate) {
@@ -69,14 +87,18 @@ class Game {
     }
     
     const matesCentrePoint = new Point(xSum/mates.length, ySum/mates.length);
-    const x = matesCentrePoint.x - boidMate.boid.x;
-    const y = matesCentrePoint.y - boidMate.boid.y;
-    const matesCentrePointAngle = Math.atan2(y, x) + Math.PI/2;
-    this.steerTowardsAngle(boidMate, matesCentrePointAngle);
+    const angleTowardsCentrePoint = this.pointAngleFromBoidPerspective(matesCentrePoint, boidMate.boid);
+    this.steerTowardsAngle(boidMate, angleTowardsCentrePoint);
     
     // const ctx = window.getGameCanvasCtx();
     // ctx.fillStyle = 'red';
     // ctx.fillRect(matesCentrePoint.x-2, matesCentrePoint.y-2, 4, 4);
+  }
+  
+  pointAngleFromBoidPerspective(point, boid) {
+    const x = point.x - boid.x;
+    const y = point.y - boid.y;
+    return Math.atan2(y, x) + Math.PI/2;
   }
   
   steerTowardsAngle(boidMate, angle) {
