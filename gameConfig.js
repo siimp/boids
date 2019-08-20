@@ -2,12 +2,19 @@
 
 {
   let defaultConfig = {
-      boidCount: 8,
+      boidCount: 1,
+      rules: {
+        avoidCrowding: false,
+        averageHeading: false,
+        averagePosition: false,
+        avoidBorders: true
+      },
       boid: {
-        width: 10,
-        height: 30,
-        localZoneRadius: 100,
-        turningSpeed: 0.05,
+        width: 8,
+        height: 20,
+        localZoneRadius: 80,
+        turningSpeed: 0.04,
+        flyingSpeed: 1,
         color: "green"
       }
   }
