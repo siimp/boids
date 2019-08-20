@@ -25,7 +25,9 @@ class Game {
     for (const boidMateIndex in boidWithMates) {
       const boidMate = boidWithMates[boidMateIndex];
       if (boidMate.mates.length > 0) {
-        this.adjustAngle(boidMate);;
+        this.steerToAvoidCrowding(boidMate);
+        this.steerTowardsAverageHeading(boidMate);
+        this.steerTowardsAveragePosition(boidMate);
       }
     }
     
@@ -35,26 +37,54 @@ class Game {
     }
   }
   
-  adjustAngle(boidMate) {
-    const averageAngle = this.calculateAverageAngle(boidMate.mates);
-    if (averageAngle > boidMate.boid.angle) {
-      boidMate.boid.newAngle = boidMate.boid.angle + config.boid.turningSpeed;
-    } else {
-      boidMate.boid.newAngle = boidMate.boid.angle - config.boid.turningSpeed;
-    }
+  steerToAvoidCrowding(boidMates) {
+  
   }
   
-  calculateAverageAngle(mates) {
+  steerTowardsAverageHeading(boidMate) {
     // https://en.wikipedia.org/wiki/Mean_of_circular_quantities - mean of angles
     let sinSum = 0;
     let cosSum = 0;
+    const mates = boidMate.mates;
+    
     for (const mateIndex in mates) {
       const mate = mates[mateIndex];
       sinSum += Math.sin(mate.angle);
       cosSum += Math.cos(mate.angle);
     }
     
-    return Math.atan2(sinSum/mates.length, cosSum/mates.length);
+    const averageAngle =  Math.atan2(sinSum/mates.length, cosSum/mates.length);
+    this.steerTowardsAngle(boidMate, averageAngle);
+  }
+  
+  steerTowardsAveragePosition(boidMate) {
+    let xSum = 0;
+    let ySum = 0;
+    const mates = boidMate.mates;
+    
+    for (const mateIndex in mates) {
+      const mate = mates[mateIndex];
+      xSum += mate.x
+      ySum += mate.y;
+    }
+    
+    const matesCentrePoint = new Point(xSum/mates.length, ySum/mates.length);
+    const x = matesCentrePoint.x - boidMate.boid.x;
+    const y = matesCentrePoint.y - boidMate.boid.y;
+    const matesCentrePointAngle = Math.atan2(y, x) + Math.PI/2;
+    this.steerTowardsAngle(boidMate, matesCentrePointAngle);
+    
+    // const ctx = window.getGameCanvasCtx();
+    // ctx.fillStyle = 'red';
+    // ctx.fillRect(matesCentrePoint.x-2, matesCentrePoint.y-2, 4, 4);
+  }
+  
+  steerTowardsAngle(boidMate, angle) {
+    if (angle > boidMate.boid.angle) {
+      boidMate.boid.newAngle = boidMate.boid.angle + config.boid.turningSpeed;
+    } else {
+      boidMate.boid.newAngle = boidMate.boid.angle - config.boid.turningSpeed;
+    }
   }
   
   calculateBoidMates() {

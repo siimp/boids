@@ -2,7 +2,7 @@
 
 {
   let defaultConfig = {
-      boidCount: 20,
+      boidCount: 8,
       boid: {
         width: 10,
         height: 30,
