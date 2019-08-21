@@ -19,7 +19,6 @@ class Game {
     this.areaHeight = areaHeight;
     for (let boidIndex = 0; boidIndex < config.boidCount; boidIndex++) {
       const boid = new Boid(Math.random() * areaWidth, Math.random() * areaHeight, Math.DOUBLE_PI * Math.random());
-      //const boid = new Boid(400, 250, this.normalizeAngle(Math.PI/4 + Math.DOUBLE_PI));
       boid.setLocalZoneRadius(config.boid.localZoneRadius);
       boid.setSpeed(config.boid.flyingSpeed);
       this.boids.push(boid);
@@ -71,8 +70,8 @@ class Game {
     }
     
     if (closestMate) {
-      const angleTowardsClosestMate = this.pointAngleFromBoidPerspective(closestMate, boidMate.boid);
-      const oppositeAngle = angleTowardsClosestMate + Math.PI;
+      // const angleTowardsClosestMate = this.pointAngleFromBoidPerspective(closestMate, boidMate.boid);
+      const oppositeAngle = closestMate.angle + Math.PI;
       this.steerTowardsAngle(boidMate, oppositeAngle);
     }
   }
@@ -112,21 +111,17 @@ class Game {
   steerToAvoidBoarders(boidMate) {
     const x = boidMate.boid.x;
     const y = boidMate.boid.y;
-    // console.log(x, y, boidMate.boid.angle)
-    if (x <= config.boid.localZoneRadius) {
-      console.log("right")
+    const distanceToStartTurning = config.boid.flyingSpeed * (1 / config.boid.turningSpeed)
+    
+    if (x <= distanceToStartTurning) {
       this.steerTowardsAngle(boidMate, Math.HALF_PI);
-    }
-    if (x >= (this.areaWidth - config.boid.localZoneRadius)) {
-      console.log("left")
-      this.steerTowardsAngle(boidMate, Math.PI + Math.HALF_PI);
-    }
-    if (y <= config.boid.localZoneRadius) {
-      console.log("down")
+    } else if (x > (this.areaWidth - distanceToStartTurning)) {
+      this.steerTowardsAngle(boidMate, -Math.HALF_PI);
+    } 
+    
+    if (y <= distanceToStartTurning) {
       this.steerTowardsAngle(boidMate, Math.PI);
-    }
-    if (y >= (this.areaHeight - config.boid.localZoneRadius)) {
-      console.log("up")
+    } else if (y > (this.areaHeight - distanceToStartTurning)) {
       this.steerTowardsAngle(boidMate, Math.DOUBLE_PI);
     }
   }
@@ -139,10 +134,20 @@ class Game {
   
   steerTowardsAngle(boidMate, angle) {
     const towardsAngle = this.normalizeAngle(angle);
-    console.log("current angle: ", boidMate.boid.angle);
-    console.log("towards angle: ", towardsAngle);
+    const deltaAngle = Math.abs(towardsAngle - boidMate.boid.angle)
     
+    let increaseAngle = true;
     if (towardsAngle > boidMate.boid.angle) {
+      if (deltaAngle >= Math.PI) {
+        increaseAngle = false;
+      }
+    } else {
+      if (deltaAngle <= Math.PI) {
+        increaseAngle = false;
+      }
+    }
+
+    if (increaseAngle) {
       boidMate.boid.newAngle = boidMate.boid.angle + config.boid.turningSpeed;
     } else {
       boidMate.boid.newAngle = boidMate.boid.angle - config.boid.turningSpeed;
