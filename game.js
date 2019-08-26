@@ -128,9 +128,7 @@ class Game {
       this.steerTowardsAngle(boidMate, Math.HALF_PI);
     } else if (x > (this.areaWidth - distanceToStartTurning)) {
       this.steerTowardsAngle(boidMate, -Math.HALF_PI);
-    } 
-    
-    if (y <= distanceToStartTurning) {
+    } else if (y <= distanceToStartTurning) {
       this.steerTowardsAngle(boidMate, Math.PI);
     } else if (y > (this.areaHeight - distanceToStartTurning)) {
       this.steerTowardsAngle(boidMate, Math.DOUBLE_PI);
