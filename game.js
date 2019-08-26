@@ -18,7 +18,12 @@ class Game {
     this.areaWidth = areaWidth;
     this.areaHeight = areaHeight;
     for (let boidIndex = 0; boidIndex < config.boidCount; boidIndex++) {
-      const boid = new Boid(Math.random() * areaWidth, Math.random() * areaHeight, Math.DOUBLE_PI * Math.random());
+      
+      let boid = null;
+      do {
+        boid = new Boid(Math.random() * areaWidth, Math.random() * areaHeight, Math.DOUBLE_PI * Math.random());
+      } while(this.intersectsWithOthers(boid.x, boid.y));
+      
       boid.setLocalZoneRadius(config.boid.localZoneRadius);
       boid.setSpeed(config.boid.flyingSpeed);
       this.boids.push(boid);
@@ -47,8 +52,10 @@ class Game {
     
     for (const boidIndex in this.boids) {
       const boid = this.boids[boidIndex];
-      boid.newX = boid.x + boid.speed * Math.sin(boid.newAngle);
-      boid.newY = boid.y + boid.speed * -Math.cos(boid.newAngle);
+      const newX = boid.x + boid.speed * Math.sin(boid.newAngle);
+      const newY = boid.y + boid.speed * -Math.cos(boid.newAngle);
+      boid.newX = newX;
+      boid.newY = newY;
       
       boid.flipToNewValues();
     }
@@ -93,6 +100,10 @@ class Game {
   }
   
   steerTowardsAveragePosition(boidMate) {
+    if (boidMate.mates.length < 2) {
+     return;
+    }
+    
     let xSum = 0;
     let ySum = 0;
     const mates = boidMate.mates;
@@ -168,7 +179,7 @@ class Game {
         "mates": []
       };
       for (const boidMateIndex in boidWithMates) {
-      const boidMate = boidWithMates[boidMateIndex];
+        const boidMate = boidWithMates[boidMateIndex];
         if (newBoidMate.boid.isInLocalZone(boidMate.boid)) {
           boidMate.mates.push(newBoidMate.boid);
           newBoidMate.mates.push(boidMate.boid);
@@ -179,6 +190,25 @@ class Game {
     return boidWithMates;
   }
   
+  intersectsWithOthers(x, y, thisBoid) {
+    let intersects = false;
+    
+    for (let boidIndex in this.boids) {
+      let otherBoid = this.boids[boidIndex];
+      if (thisBoid === otherBoid) {
+        continue;
+      }
+      const minX = otherBoid.x;
+      const maxX = otherBoid.x + config.boid.width;
+      const minY = otherBoid.y;
+      const maxY = otherBoid.y + config.boid.height;
+      if (x >= minX && x <= maxX && y >= minY && y <= maxY) {
+        intersects = true;
+        break;
+      }
+    }
+    return intersects;
+  }
   
   getBoids() {
     return this.boids;

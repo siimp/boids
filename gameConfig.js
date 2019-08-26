@@ -4,9 +4,9 @@
   let defaultConfig = {
       boidCount: 50,
       rules: {
-        avoidCrowding: false,
+        avoidCrowding: true,
         averageHeading: true,
-        averagePosition: false,
+        averagePosition: true,
         avoidBorders: true
       },
       boid: {
